@@ -1,0 +1,66 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: welcome
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name:      welcome
+  namespace: welcome
+  labels:
+    app: welcome
+
+spec:
+  type: LoadBalancer
+  selector:
+    app: welcome
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:      welcome
+  namespace: welcome
+  labels:
+    app: welcome
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: welcome
+  template:
+    metadata:
+      labels:
+        app: welcome
+    spec:
+      serviceAccountName: default
+      containers:
+        - name:  web
+          image: starkandwayne/welcome-to-k8s
+          imagePullPolicy: Always
+
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+
+          resources:
+            limits:
+              cpu:    100m
+              memory: 128Mi
+            requests:
+              cpu:    100m
+              memory: 64Mi
