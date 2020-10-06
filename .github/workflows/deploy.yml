@@ -1,0 +1,19 @@
+name: Deploy
+on:
+  push:
+    branches: [master]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Deploy to Cloud Foundry
+        uses: jhunt/cf-push@v1
+        with:
+          api:      api.run.pivotal.io
+          org:      starkandwayne
+          space:    hol-eu2020-prep
+          username: ${{ secrets.CF_USERNAME }}
+          password: ${{ secrets.CF_PASSWORD }}
+          manifest: manifest.yml
