@@ -17,3 +17,4 @@ jobs:
           username: ${{ secrets.CF_USERNAME }}
           password: ${{ secrets.CF_PASSWORD }}
           manifest: manifest.yml
+          validate: false
