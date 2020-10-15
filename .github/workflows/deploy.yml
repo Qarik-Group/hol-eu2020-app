@@ -11,9 +11,9 @@ jobs:
       - name: Deploy to Cloud Foundry
         uses: jhunt/cf-push@v1
         with:
-          api:      api.run.pivotal.io
+          api:      https://api.hol.starkandwayne.com
           org:      starkandwayne
-          space:    hol-eu2020-prep
+          space:    ${{ secrets.CF_SPACE }}
           username: ${{ secrets.CF_USERNAME }}
           password: ${{ secrets.CF_PASSWORD }}
           manifest: manifest.yml
